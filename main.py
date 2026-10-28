@@ -20,24 +20,24 @@ tasks = [
 ]
 
 #Initial GET Function
-@app.get("/")
+@app.get("/", summary="Get API Information")
 async def root():
     return {"name": "Task API",
             "version": "1.0",
             "endpoints": "/tasks"}
 
 #Health Status
-@app.get("/health")
+@app.get("/health", summary="Checks health status")
 async def health():
     return {"status": "ok"}
 
 #GET Tasks Function
-@app.get("/tasks")
+@app.get("/tasks", summary="Retrieves all tasks")
 async def get_tasks():
     return tasks
 
 #GET Tasks ID Function
-@app.get("/tasks/{id}")
+@app.get("/tasks/{id}", summary="Retrieves task by ID")
 async def get_tasks(id: int):
     for task in tasks:
         if task["id"] == id:
@@ -49,7 +49,7 @@ async def get_tasks(id: int):
     )
 
 #POST Function
-@app.post("/tasks")
+@app.post("/tasks", summary="Creates a new task")
 async def create_task(task_data: CreateTask):
     if task_data.title is None or not task_data.title.strip():
         return JSONResponse(
@@ -68,7 +68,7 @@ async def create_task(task_data: CreateTask):
     return JSONResponse(status_code=201, content=new_task)
 
 #PUT Function
-@app.put("/tasks/{id}")
+@app.put("/tasks/{id}", summary="Updates task by ID")
 async def update_task(id: int, task_data: UpdateTask):
     task = next((task for task in tasks if task["id"] == id), None)
 
@@ -98,7 +98,7 @@ async def update_task(id: int, task_data: UpdateTask):
     return task
 
 #DELETE Function
-@app.delete("/tasks/{id}", status_code=204)
+@app.delete("/tasks/{id}", status_code=204, summary="Deletes task by ID")
 async def delete_task(id: int):
     task = next((task for task in tasks if task["id"] == id), None)
 
